@@ -14,6 +14,10 @@ from picamera import PiCamera
 from picamera.array import PiRGBArray
 ap = argparse.ArgumentParser() 
 args = vars(ap.parse_args())
+VIDEO_BASE_FOLDER = '/home/pi/Videos/'
+def get_video_filename():
+    return VIDEO_BASE_FOLDER+'video_out'+'_video.h264'
+
 
 print("[INFO] start video...")
 #with picamera.PiCamera() as camera:
@@ -24,6 +28,7 @@ rawCapture = PiRGBArray(camera, size=(640, 480))
 
 # allow the camera to warmup
 time.sleep(0.1)
+camera.start_recording(get_video_filename())
 out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc(*'XVID'), 25, (400,300))
 print("[INFO] loading network...")
 model = load_model("./avcnet_best_5.hdf5",custom_objects={"tf": tf.cast})
@@ -58,4 +63,5 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	rawCapture.truncate(0)
 	if key == ord("q"):
 		break
+camera.stop_recording()
 cv2.destroyAllWindows()
