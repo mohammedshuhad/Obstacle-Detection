@@ -23,7 +23,7 @@ print("[INFO] start video...")
 #with picamera.PiCamera() as camera:
 camera = PiCamera()
 camera.resolution = (640, 480)
-camera.framerate = 32
+camera.framerate = 16
 rawCapture = PiRGBArray(camera, size=(640, 480))
 
 # allow the camera to warmup
